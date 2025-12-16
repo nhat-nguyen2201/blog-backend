@@ -1,0 +1,26 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      # Bước 1: Cài đặt Node.js (Cần thiết để chạy Railway CLI)
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Bước 2: Cài đặt Railway CLI và chạy lệnh Deploy
+      - name: Install CLI and Deploy
+        run: |
+          npm install -g @railway/cli
+          railway up --service blog-backend --detach
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
